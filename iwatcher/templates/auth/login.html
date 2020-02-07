@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="article">
+	<h2>Войти</h2>
+	{% from "render_macro.html" import render_field %}
+    <form method=post>
+        {{ form.csrf_token }}
+        {% if form.csrf_token.errors %}
+        <div class="warning">
+            <p>Админ хотел найти проблемы, и устранить их причины. <a href="https://ru.wikipedia.org/wiki/CSRF">CSRF</a> он уже нашел :)</p>
+            <p><b>Попробуй обновить страницу</b></p>
+        </div>
+        {% endif %}
+      <dl>
+        <dt><b>Имя пользователя</b>
+        {{ render_field(form.username) }}
+        <dt><b>Пароль</b>
+        {{ render_field(form.password) }}
+        <dt>{% for message in get_flashed_messages() %}
+            <div class="flash">{{ message }}</div>
+        {% endfor %}
+      </dl>
+      <p><input type=submit value=Войти>
+    </form>
+
+	<a href="/register">{% block m_register %}Регистрация{% endblock %}</a>
+	<hr>
+	<div>
+        <p>Прочитайте <a href="/pc">политику конфиденциальности</a></p>
+        <p><a href="/contribute">Поддержите проект электронной монетой</a>, потому что нам надо оплачивать сервер :-)</p>
+    </div>
+</div>
+{% endblock %}

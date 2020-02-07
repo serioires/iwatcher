@@ -1,0 +1,19 @@
+{% block page %}
+			<li><a href="/">Map</a></li>
+		{% if g.user %}
+            <li><a href="/edit">Edit</a></li>
+		{% else %}
+			<li><a href="{{ url_for('auth.register') }}">Edit</a></li>
+		{% endif %}
+			<li><a href="/about">About</a></li>
+			<li><a href="/just_do_it">Just do it!</a></li>
+			<li><a href="/contribute">Contribute</a></li>
+    		<li class="lang"><a href="/ru">Русский</a></li>
+		{% if g.user and g.user.is_admin %}
+			<li><a href="/topsecret">Control panel</a></li>{% endif %}
+		{% if g.user %}
+			<li><a href="/logout">Выйти</a></li>
+		{% else %}
+            <li><a href="{{ url_for('auth.login') }}">Log in</a></li>
+        {% endif %}
+{% endblock %}

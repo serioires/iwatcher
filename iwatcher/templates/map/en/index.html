@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block content %}
+<script type="text/javascript" src="{{ url_for('static', filename='leaflet/leaflet.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='leaflet.rotatedMarker.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='markercluster/leaflet.markercluster.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='Control.Geocoder.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='iWatcher-src.js') }}"></script>
+
+ <div id="basemap"></div>
+ <div id="caminfo">
+		<div class="column" id="latlon">
+		    <p><b>Широта: </b><span id="lat"></span></p>
+			<p><b>Долгота: </b><span id="lon"></span></p>
+		</div>
+		<div class="column">
+			<span class="des" id="about"></span>
+		</div>
+		<div class="column" id="info">
+			<p><span id="added"></span></p>
+			<p><b>Подтверждено: </b><span id="rating">0</span>раз</p>
+			<p><input type="button" value="Подтвердить" onclick="rRate(cSelected.id)"/>
+			<input id="csrf" value="{@}" type="hidden"><input id="hscidt" type="hidden"></p>
+		</div>
+</div>
+<script>
+    var editor = false;
+	var map;
+	map = new L.Map('basemap');
+
+	// create the tile layer with correct attribution
+	var osmUrl='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+	var osmAttrib='Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors';
+	var osm = new L.TileLayer(osmUrl, {minZoom:4, maxZoom: 19, attribution: osmAttrib});
+
+	map.setView(new L.LatLng((getCookie('lat') ? getCookie('lat') : 55.7522), (getCookie('lon') ? getCookie('lat') : 37.6156)), 9);
+	map.addLayer(osm);
+    L.Control.geocoder({
+        collapsed: false,
+        placeholder: {% if g.lang=='en' %}"Search..."{% else %}"Искать..."{% endif %},
+        errorMessage: {% if g.lang=='en' %}"Nothing found."{% else %}"Не найдено."{% endif %},
+        defaultMarkGeocode: false
+    }).addTo(map);
+
+    var markers = L.markerClusterGroup();/*{
+    	spiderfyOnMaxZoom: false
+	});*/
+    map.addLayer(markers);
+
+	onMapLoad();
+
+	map.on ('moveend', onMapUpd);
+	//map.on ('resize', onMapUpd);
+	map.on ('zoomend', onMapUpd);
+</script>
+{% endblock %}

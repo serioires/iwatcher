@@ -1,0 +1,28 @@
+<HTML>
+	<HEAD>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>iWatcher</title>
+		<link rel="stylesheet" href="{{ url_for('static', filename='page.css') }}">
+		<link rel="stylesheet" href="{{ url_for('static', filename='leaflet/leaflet.css') }}" />
+        <link rel="stylesheet" href="{{ url_for('static', filename='markercluster/MarkerCluster.css') }}" />
+        <link rel="stylesheet" href="{{ url_for('static', filename='markercluster/MarkerCluster.Default.css') }}" />
+        <link rel="stylesheet" href="{{ url_for('static', filename='Control.Geocoder.css') }}">
+		<script type="text/javascript" src="{{ url_for('static', filename='envir.js') }}"></script>
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+	</HEAD>
+	<BODY>
+        <nav>
+            <ul>
+        {% if g.lang=='en'%}{% include 'menu_en.html' %}{% else %}{% include 'menu.html'%}{% endif %}
+            </ul>
+        </nav>
+        <main>
+        {% block content %}{% endblock %}
+        </main>
+		<footer>
+			<p class="column">Some rites reversed <span class="copyleft">&copy;</span> <b>pirates</b> <script type="text/javascript">var mdate = new Date(); document.write(mdate.getFullYear());</script></p>
+			<p class="column"></p>
+			<p class="column cl3">Map data is still © <a href="https://openstreetmap.org"><b>OpenStreetMap</b></a> contributors</p>
+		</footer>
+    </BODY>
+</HTML>

@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="article">
+    {% if g.lang == 'en'%}<h2>Registration</h2>
+    <p>You need to register to add information about cctv. So we will be able to detect and reject bots. Read our <a href="/pc">privacy politics</a> for details.</p>{% else %}
+	<h2>Регистрация</h2>
+    <p>Для добавления информации о камерах необходимо зарегистрироваться. Это нужно чтобы мы могли удалять правки ботов. Прочитайте <a href="/pc">политику конфиденциальности</a>, чтобы узнать, какая информация о вас сохраняется</p>{% endif %}
+	{% from "render_macro.html" import render_field %}
+    <form method=post>
+    {{ form.csrf_token }}
+    {% if form.csrf_token.errors %}
+    <div class="warning">
+        <p>Админ хотел найти проблемы, и устранить их причины. <a href="https://ru.wikipedia.org/wiki/CSRF">CSRF</a> он уже нашел :)</p>
+        <p><b>Попробуй обновить страницу</b></p>
+    </div>
+    {% endif %}
+      <dl>
+        <dt><b>Имя пользователя</b>
+        {{ render_field(form.username) }}
+        <dt><b>Пароль</b>
+        {{ render_field(form.password) }}
+        <dt><b>Повторите пароль</b>
+        {{ render_field(form.confirm) }}
+        <dt>{% for message in get_flashed_messages() %}
+            <div class="flash">{{ message }}</div>
+        {% endfor %}
+      </dl>
+      <p><input type=submit value="{% if g.lang == 'en' %}Register{% else %}Регистрация{% endif %}">
+    </form>
+	<hr>
+	<div>
+        <p><a href="/contribute">Поддержите проект электронной монетой</a>, потому что нам надо оплачивать сервер :-)</p>
+	</div>
+</div>
+{% endblock %}
