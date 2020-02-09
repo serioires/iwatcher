@@ -32,7 +32,7 @@ class TopSecretIndex(AdminIndexView):
         return abort(404)
 
 
-class BlogModelView(peewee.ModelView):
+class MapModelView(peewee.ModelView):
     form_base_class = SecureForm
     def is_accessible(self):
         if g.user is None:
@@ -56,5 +56,5 @@ import os.path as op
 
 path = op.join(op.dirname(__file__), 'static')
 admin.add_view(TheStorage(path, '/main/', name='Main'))
-admin.add_view(BlogModelView(User))
-admin.add_view(BlogModelView(Camera))
+admin.add_view(MapModelView(User))
+admin.add_view(MapModelView(Camera))

@@ -7,10 +7,9 @@ from flask import g
 DATABASE = 'iwatcher_test'
 DBUSER = 'iwatcher-test'
 DBPASS = 'testpassword'
-#db = SqliteDatabase(DATABASE)
 db = MySQLDatabase(DATABASE,user=DBUSER,password=DBPASS)
 
-
+#общий прототип для моделей
 class BaseModel(Model):
     class Meta():
         database = db
@@ -39,32 +38,32 @@ class Camera(BaseModel):
             (('lat', 'lon', 'dev'), True),
         )
 
-
+#отметка добавления - для отлова ботов по скорости
 class TimePoint(BaseModel):
     time = DateTimeField(default = datetime.datetime.now)
     author = ForeignKeyField(User, backref='activity')
 
-
+#связь Пользователь-"подтвердил"-Камеру
 class UCcheck(BaseModel):
     user = ForeignKeyField(User, backref = 'checked_for')
     camera = ForeignKeyField(Camera, backref = 'checked_by')
     class Meta:
         primary_key = CompositeKey('user', 'camera')
 
-
+#связь Админ-проголосовал_за-Пользователя - добавление админов большинством голосов
 class AUvote(BaseModel):
     user = ForeignKeyField(User)
     admin = ForeignKeyField(User)
     class Meta:
         primary_key = CompositeKey('user', 'admin')
 
-
+#Для обмена сообщениями между админами
 class AMessage(BaseModel):
     author = ForeignKeyField(User)
     message = TextField()
     mes_time = DateTimeField(default = datetime.datetime.now)
 
 
-
+#если существуют, тихо идем дальше
 with db:
     db.create_tables([User, Camera, TimePoint, UCcheck, AUvote, AMessage])

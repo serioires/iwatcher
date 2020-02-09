@@ -19,17 +19,22 @@ def set_lang():
 
 @bp.route('/')
 def index():
-    if g.lang == 'en':
-        return render_template('map/en/index.html')
-    else:
-        return render_template('map/index.html')
+    return render_template('map/index.html')
 
 
+@bp.route('/edit')
+@login_required
+def edit():
+    return render_template('map/edit.html')
+
+
+#переключение языков (используя cookie 'lang')
 @bp.route('/en')
 def en():
     resp = make_response(redirect(url_for('map.index')))
     resp.set_cookie('lang', 'en')
     return resp
+
 
 @bp.route('/ru')
 def ru():
@@ -37,14 +42,6 @@ def ru():
     resp.set_cookie('lang', 'ru')
     return resp
 
-
-@bp.route('/edit')
-@login_required
-def edit():
-    if g.lang == 'en':
-        return render_template('map/en/edit.html')
-    else:
-        return render_template('map/edit.html')
 
 
 @bp.route('/<page>')

@@ -8,7 +8,7 @@ from werkzeug.security import  check_password_hash, generate_password_hash
 from iwatcher.models import User
 from iwatcher.forms import LoginForm,RegistrationForm
 
-bp = Blueprint('auth', __name__)#, url_prefix='/auth')
+bp = Blueprint('auth', __name__)
 
 @bp.route('/register', methods=('GET', 'POST'))
 def register():

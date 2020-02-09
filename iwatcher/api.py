@@ -4,6 +4,11 @@ from iwatcher.models import Camera, UCcheck,TimePoint
 
 bp = Blueprint('api', __name__, url_prefix='/api')
 
+#get - получить камеры для прямоугольника на карте
+#add - добавить камеру (требуется аутентификация)
+#rate - подтвердить камеру (требуется аутентификация)
+#info - получить описание камеры, "рейтинг" и время добавления
+
 @bp.route('/get', methods=('POST',))
 def get_cams():
     geo = request.get_json()

@@ -9,16 +9,16 @@
  <div id="basemap"></div>
  <div id="caminfo">
 		<div class="column" id="latlon">
-		    <p><b>Широта: </b><span id="lat"></span></p>
-			<p><b>Долгота: </b><span id="lon"></span></p>
+			<p><b>{% if g.lang=='en' %}Latitude: {% else %}Широта: {% endif %}</b><span id="lat"></span></p>
+			<p><b>{% if g.lang=='en' %}Longitude: {% else %}Долгота: {% endif %}</b><span id="lon"></span></p>
 		</div>
 		<div class="column">
 			<span class="des" id="about"></span>
 		</div>
 		<div class="column" id="info">
 			<p><span id="added"></span></p>
-			<p><b>Подтверждено: </b><span id="rating">0</span> раз</p>
-			<p><input type="button" value="Подтвердить" onclick="rRate(cSelected.id)"/>
+			<p><b>{% if g.lang=='en' %}Confirmed {% else %}Подтверждено {% endif %}</b><span id="rating">0</span>{% if g.lang=='en' %} times{% else %} раз{% endif %}</p>
+			<p><input type="button" value={% if g.lang=='en' %}"Confirm"{% else %}"Подтвердить"{% endif %} onclick="rRate(cSelected.id)"/>
 			<input id="csrf" value="{@}" type="hidden"><input id="hscidt" type="hidden"></p>
 		</div>
 </div>

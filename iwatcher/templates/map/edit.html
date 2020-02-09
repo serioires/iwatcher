@@ -11,22 +11,22 @@
 	<form name="addcam" method="post">
 		<input name="csrf" type="hidden" value="{@}">
 		<div class="column" id="latlon">
-			<p><b>Широта: </b><span id="lat"></span></p>
-			<p><b>Долгота: </b><span id="lon"></span></p>
+			<p><b>{% if g.lang=='en' %}Latitude: {% else %}Широта: {% endif %}</b><span id="lat"></span></p>
+			<p><b>{% if g.lang=='en' %}Longitude: {% else %}Долгота: {% endif %}</b><span id="lon"></span></p>
 		</div>
 		<div class="column">
-			<p><b>Тип камеры</b></p>
-			<p><input name="c_type" type="radio" value="std" id="std"  onchange="setCType()" checked="checked">Направленная</p>
-			<p><input name="c_type" type="radio" value="fish" id="fish" onchange="setCType()">Широкоугольная 180/360 (fish-eye)</p>
+			<p><b>{% if g.lang=='en' %}Camera type{% else %}Тип камеры{% endif %}</b></p>
+			<p><input name="c_type" type="radio" value="std" id="std"  onchange="setCType()" checked="checked">{% if g.lang=='en' %}Directed{% else %}Направленная{% endif %}</p>
+			<p><input name="c_type" type="radio" value="fish" id="fish" onchange="setCType()">{% if g.lang=='en' %}Wide angle (fish-eye){% else %}Широкоугольная 180/360 (fish-eye){% endif %}</p>
 		</div>
 		<div class="column">
-			<span class="formitem">Направление</span>
+			<span class="formitem">{% if g.lang=='en' %}Direction{% else %}Направление{% endif %}</span>
 			<input name="dev" id="dev" type="range" min="0" max="72" step="1" oninput="if(newcamera!=undefined){newcamera.setRotationAngle(value*5)}"/>
-			<input name="additem" type="button" value="Применить" onclick="rAddData()"/>
-			<h3>Добавить</h3>
+			<input name="additem" type="button" value={% if g.lang=='en' %}"Apply"{% else %}"Применить"{% endif %} onclick="rAdd()"/>
+			<h3>{% if g.lang=='en' %}Add to the map{% else %}Добавить на карту{% endif %}</h3>
 		</div>
 		<div class="column">
-			<textarea class="descr" name="descr" id="new_about" placeholder="Описание" maxlength="255"></textarea>
+			<textarea class="descr" name="descr" id="new_about" placeholder={% if g.lang=='en' %}"Description"{% else %}"Описание"{% endif %} maxlength="255"></textarea>
 		</div>
 	</form>
  </div>

@@ -33,8 +33,5 @@ def create_app(test_config=None):
     from . import api
     app.register_blueprint(api.bp)
 
-#!!! всякие левые херы могут видеть файлоадминку!! Это не есть хорошо!!
     admin.init_app(app)
-
-
     return app

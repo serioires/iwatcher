@@ -1,6 +1,6 @@
 //lat,lng -координаты, dev задается в виде количества 5-градусных секторов
 var cams = [];
-var cSelected; //выделенная
+var cSelected; //выделенная пользователем
 var newbounds;
 var oldbounds;
 
@@ -53,6 +53,7 @@ function drawCamera(lat, lng, dev, id) {
 }
 
 
+// функции с именами r[Somename] дергают за точки входа /api/[somename]
 function rInfo(id) {
 	fetch(`api/info/${id}`, {method: 'POST'})
   	  	.then(response => response.json())
@@ -80,6 +81,57 @@ function rRate(id) {
   	  	.catch(error => alert(error.message));
 }
 
+
+function rGet() {
+  	let requests = prepRanges().map(range => fetch('api/get', {
+  	  	method: 'POST',
+  	  	headers: {
+  	  	  	'Content-Type': 'application/json;charset=utf-8'
+  	  	},
+  	  	body: JSON.stringify(range)
+  	})
+    .then(response => response.json()));
+  	Promise.all(requests)
+  	  	.then(responses => responses.forEach(
+            data => data.forEach(
+                camera => drawCamera(camera.lat, camera.lon, camera.dev, camera.id)
+            )
+        ))
+  	  	.catch(error => alert(error.message));
+
+}
+
+
+function rAdd(){
+	if (newcamera){
+	    let latlng = newcamera.getLatLng();
+        let dev = (document.getElementById('fish').checked) ? 80 : document.getElementById("dev").value;
+	    addthis = {
+	         lat: latlng.lat.toFixed(6),
+			 lon: latlng.lng.toFixed(6),
+			 dev: dev,
+			 about: document.getElementById("new_about").value
+	    }
+        fetch('api/add', {
+            method: 'POST',
+            headers: {
+      	  	  	'Content-Type': 'application/json;charset=utf-8'
+      	  	},
+      	  	body: JSON.stringify(addthis)
+        })
+        .then(response => response.json())
+        .then(data => data.forEach(
+            camera => {
+                newcamera.remove();
+                newcamera = undefined;
+                drawCamera(camera.lat, camera.lon, camera.dev, camera.id);
+            }
+        ))
+	}
+}
+
+
+// Утилиты
 function prepRanges() {
   	let ranges = [];
   	if (!oldbounds.contains(newbounds)) {
@@ -138,55 +190,6 @@ function prepRanges() {
 }
 
 
-function rData() {
-  	let requests = prepRanges().map(range => fetch('api/get', {
-  	  	method: 'POST',
-  	  	headers: {
-  	  	  	'Content-Type': 'application/json;charset=utf-8'
-  	  	},
-  	  	body: JSON.stringify(range)
-  	})
-    .then(response => response.json()));
-  	Promise.all(requests)
-  	  	.then(responses => responses.forEach(
-            data => data.forEach(
-                camera => drawCamera(camera.lat, camera.lon, camera.dev, camera.id)
-            )
-        ))
-  	  	.catch(error => alert(error.message));
-
-}
-
-
-function rAddData(){
-	if (newcamera){
-	    let latlng = newcamera.getLatLng();
-        let dev = (document.getElementById('fish').checked) ? 80 : document.getElementById("dev").value;
-	    addthis = {
-	         lat: latlng.lat.toFixed(6),
-			 lon: latlng.lng.toFixed(6),
-			 dev: dev,
-			 about: document.getElementById("new_about").value
-	    }
-        fetch('api/add', {
-            method: 'POST',
-            headers: {
-      	  	  	'Content-Type': 'application/json;charset=utf-8'
-      	  	},
-      	  	body: JSON.stringify(addthis)
-        })
-        .then(response => response.json())
-        .then(data => data.forEach(
-            camera => {
-                newcamera.remove();
-                newcamera = undefined;
-                drawCamera(camera.lat, camera.lon, camera.dev, camera.id);
-            }
-        ))
-	}
-}
-
-
 function setCType() {
     let type = ((document.getElementById('fish').checked)? 'fish' : 'cctv');
     if (newcamera) {
@@ -219,12 +222,13 @@ function oldCamRemove() {
 }
 
 
+// Обработчики событий
 function onMapUpd() {
 	if (map.getZoom() > 8) {
 		newbounds = map.getBounds();
 		oldCamRemove();
 
-		rData();
+		rGet();
 		oldbounds = newbounds;
 	}
 	setCookie("lat", (map.getCenter()).lat.toFixed(6));
@@ -235,5 +239,5 @@ function onMapUpd() {
 function onMapLoad() {
 	oldbounds = map.getBounds();
 	newbounds = oldbounds;
-	rData(oldbounds);
+	rGet(oldbounds);
 }

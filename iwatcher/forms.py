@@ -5,6 +5,7 @@ from wtforms.csrf.session import SessionCSRF
 from flask import session
 
 CSRF_SECRET_KEY = b'gwrt23r332e33t2gs23tt23t'
+#must be changed for real using
 
 
 class BaseForm(Form):
