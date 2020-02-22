@@ -3,6 +3,8 @@ from flask import abort
 from flask_admin import *
 from flask_admin.contrib.peewee import ModelView
 from flask_admin.contrib.fileadmin import FileAdmin
+from flask_admin.contrib import peewee
+from flask_admin.form import SecureForm
 
 from iwatcher.models import *
 from iwatcher.auth import login_required

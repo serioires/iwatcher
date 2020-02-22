@@ -82,6 +82,30 @@ function rRate(id) {
 }
 
 
+function rReport(id) {
+    let report = {
+        type: 0,
+        text: ""
+    }
+	fetch(`api/report/${id}`, {
+	    method: 'POST',
+	    headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+        },
+      	body: JSON.stringify(report)
+	})
+  	  	.then(response => response.json())
+        .then(data => data.forEach(
+            upd => {
+                if (cSelected.id == upd.id) {
+                    document.getElementById("rating").innerHTML = upd.rating;
+                }
+            }
+        ))
+  	  	.catch(error => alert(error.message));
+}
+
+
 function rGet() {
   	let requests = prepRanges().map(range => fetch('api/get', {
   	  	method: 'POST',
@@ -106,7 +130,7 @@ function rAdd(){
 	if (newcamera){
 	    let latlng = newcamera.getLatLng();
         let dev = (document.getElementById('fish').checked) ? 80 : document.getElementById("dev").value;
-	    addthis = {
+	    let addthis = {
 	         lat: latlng.lat.toFixed(6),
 			 lon: latlng.lng.toFixed(6),
 			 dev: dev,

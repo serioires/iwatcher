@@ -94,3 +94,15 @@ def cam_info(id):
             cam_info = line
             cam_info['added'] = line['added'].strftime('%d %b %Y')
         return jsonify(line)
+
+
+@bp.route('/report/<id>', methods=('POST',))
+def cam_report(id):
+    user = g.user
+    report = request.get_json()
+    cam_arr = []
+    if user:
+        cam = Camera.get_or_none(Camera.id == id)
+        if cam:
+            check, newc = UReport.get_or_create(user=user, camera=cam, type=report['type'], text=report['text'])
+    return jsonify(cam_arr)

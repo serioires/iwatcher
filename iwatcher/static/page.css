@@ -37,7 +37,6 @@ nav li {
 nav a {   color: #fff;   display: inline-block; width:135px; text-align: center;   text-decoration: none; line-height: 23px;}
 nav li a {  box-sizing:border-box;   -moz-box-sizing:border-box;   -webkit-box-sizing:border-box;  }
 nav li.lang {color: darkgrey}
-nav li:last-child a { background-color: rgba(120,150,150,0.55);}
 nav a:hover, nav a:active {   background-color: #8c99a4;  }
 
 @media screen and (max-width: 975px) {

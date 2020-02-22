@@ -1,7 +1,5 @@
 import datetime
 from peewee import *
-from flask_admin.contrib import peewee
-from flask_admin.form import SecureForm
 from flask import g
 
 DATABASE = 'iwatcher_test'
@@ -50,7 +48,15 @@ class UCcheck(BaseModel):
     class Meta:
         primary_key = CompositeKey('user', 'camera')
 
-#связь Админ-проголосовал_за-Пользователя - добавление админов большинством голосов
+class UReport(BaseModel):
+    user = ForeignKeyField(User, backref = 'reported_for')
+    camera = ForeignKeyField(Camera, backref = 'reported_by')
+    type = SmallIntegerField()
+    text = TextField(null = True)
+    class Meta:
+        primary_key = CompositeKey('user', 'camera')
+
+#связь Админ-проголосовал за Пользователя - добавление админов большинством голосов
 class AUvote(BaseModel):
     user = ForeignKeyField(User)
     admin = ForeignKeyField(User)
