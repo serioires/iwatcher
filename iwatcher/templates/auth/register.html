@@ -4,7 +4,7 @@
     {% if g.lang == 'en'%}<h2>Registration</h2>
     <p>You need to register to add information about cctv. So we will be able to detect and reject bots. Read our <a href="/pc">privacy politics</a> for details.</p>{% else %}
 	<h2>Регистрация</h2>
-    <p>Для добавления информации о камерах необходимо зарегистрироваться. Так мы будем удалять правки ботов. Прочитайте <a href="/pc">политику конфиденциальности</a></p>{% endif %}
+    <p>Для добавления информации о камерах необходимо зарегистрироваться. Так мы будем удалять правки ботов. Прочитай <a href="/pc">политику конфиденциальности</a></p>{% endif %}
 	{% from "render_macro.html" import render_field %}
     <form method=post>
     {{ form.csrf_token }}
@@ -29,7 +29,7 @@
     </form>
 	<hr>
 	<div>
-        <p><a href="/contribute">Поддержите нас электронной монетой</a> – мы заплатим за сервер :-)</p>
+        <p><a href="/contribute">Поддержи нас электронной монетой</a> – мы заплатим за сервер :-)</p>
 	</div>
 </div>
 {% endblock %}

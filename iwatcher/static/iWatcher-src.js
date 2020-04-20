@@ -6,49 +6,49 @@ var oldbounds;
 
 function drawCamera(lat, lng, dev, id) {
   	if (!cams.find(item => item.id == id)) {
-        let type = (dev == 80) ? 'fish':'cctv';
-        let angle = (dev == 80) ? 0 : dev*5;
+		let type = (dev == 80) ? 'fish':'cctv';
+		let angle = (dev == 80) ? 0 : dev*5;
 
-        let imgname = 'static/images/'+type+'.png';
-    	let camImg = L.icon({
-    		iconUrl: imgname,
-      	  	iconSize: [16, 16],
-      	  	iconAnchor: [8, 8]
-    	});
-        cams.push(L.marker([lat, lng], {
-            icon: camImg,
-            opacity:1,
-            rotationAngle: angle
-        }));
-        cams[cams.length-1].id = id;
-        cams[cams.length-1].dev = dev;
-        if (!editor) {
-            cams[cams.length-1].on ('click', function(ev) {
-                if (cSelected != undefined) {
-                    let type = (cSelected.dev == 80) ? 'fish':'cctv';
-                    let clean = 'static/images/'+type+'.png';
-                    let no_shadow = L.icon({iconUrl: clean,
-                        iconSize: [16, 16],
-                        iconAnchor: [8, 8]});
-                    cSelected.setIcon(no_shadow);
-                }
-                cSelected = ev.target;
-                rInfo(cSelected.id);
-                let type = (cSelected.dev == 80) ? 'fish':'cctv';
-                let imnm = 'static/images/'+type+'.png';
-                let sImg = L.icon({
-                    iconUrl: imnm,
-                    iconSize: [16, 16],
-                    iconAnchor: [8, 8],
-                    shadowUrl: 'static/images/select.png',
-                    shadowSize: [32, 32],
-                    shadowAnchor: [16, 16]});
-                cSelected.setIcon(sImg);
-                document.getElementById("lat").innerHTML = cSelected.getLatLng().lat.toFixed(6);
-                document.getElementById("lon").innerHTML = cSelected.getLatLng().lng.toFixed(6);;
-            });
-        }
-        markers.addLayer(cams[cams.length-1]);
+		let imgname = 'static/images/'+type+'.png';
+		let camImg = L.icon({
+			iconUrl: imgname,
+	  	  	iconSize: [16, 16],
+	  	  	iconAnchor: [8, 8]
+		});
+		cams.push(L.marker([lat, lng], {
+			icon: camImg,
+			opacity:1,
+			rotationAngle: angle
+		}));
+		cams[cams.length-1].id = id;
+		cams[cams.length-1].dev = dev;
+		if (!editor) {
+			cams[cams.length-1].on ('click', function(ev) {
+				if (cSelected != undefined) {
+					let type = (cSelected.dev == 80) ? 'fish':'cctv';
+					let clean = 'static/images/'+type+'.png';
+					let no_shadow = L.icon({iconUrl: clean,
+						iconSize: [16, 16],
+						iconAnchor: [8, 8]});
+					cSelected.setIcon(no_shadow);
+				}
+				cSelected = ev.target;
+				rInfo(cSelected.id);
+				let type = (cSelected.dev == 80) ? 'fish':'cctv';
+				let imnm = 'static/images/'+type+'.png';
+				let sImg = L.icon({
+					iconUrl: imnm,
+					iconSize: [16, 16],
+					iconAnchor: [8, 8],
+					shadowUrl: 'static/images/select.png',
+					shadowSize: [32, 32],
+					shadowAnchor: [16, 16]});
+				cSelected.setIcon(sImg);
+				document.getElementById("lat").innerHTML = cSelected.getLatLng().lat.toFixed(6);
+				document.getElementById("lon").innerHTML = cSelected.getLatLng().lng.toFixed(6);;
+			});
+		}
+		markers.addLayer(cams[cams.length-1]);
   	}
 }
 
@@ -57,13 +57,13 @@ function drawCamera(lat, lng, dev, id) {
 function rInfo(id) {
 	fetch(`api/info/${id}`, {method: 'POST'})
   	  	.then(response => response.json())
-        .then( info => {
-            if (cSelected.id == info.id) {
-                document.getElementById("rating").innerHTML = info.rating;
-                document.getElementById("about").innerHTML = info.about;
-                document.getElementById("added").innerHTML = info.added;
-            }
-        })
+		.then( info => {
+			if (cSelected.id == info.id) {
+				document.getElementById("rating").innerHTML = info.rating;
+				document.getElementById("about").innerHTML = info.about;
+				document.getElementById("added").innerHTML = info.added;
+			}
+		})
   	  	.catch(error => alert(error.message))
 }
 
@@ -71,38 +71,38 @@ function rInfo(id) {
 function rRate(id) {
 	fetch(`api/rate/${id}`, {method: 'POST'})
   	  	.then(response => response.json())
-        .then(data => data.forEach(
-            upd => {
-                if (cSelected.id == upd.id) {
-                    document.getElementById("rating").innerHTML = upd.rating;
-                }
-            }
-        ))
+		.then(data => data.forEach(
+			upd => {
+				if (cSelected.id == upd.id) {
+					document.getElementById("rating").innerHTML = upd.rating;
+				}
+			}
+		))
   	  	.catch(error => alert(error.message));
 }
 
 
 function rReport(id) {
-    let report = {
-        type: 0,
-        text: ""
-    }
-	fetch(`api/report/${id}`, {
-	    method: 'POST',
-	    headers: {
-            'Content-Type': 'application/json;charset=utf-8'
-        },
-      	body: JSON.stringify(report)
-	})
-  	  	.then(response => response.json())
-        .then(data => data.forEach(
-            upd => {
-                if (cSelected.id == upd.id) {
-                    document.getElementById("rating").innerHTML = upd.rating;
-                }
-            }
-        ))
-  	  	.catch(error => alert(error.message));
+	let report = {
+		text: prompt("Сообщить о нарушении правил")
+	}
+	if(report.text)
+		fetch(`api/report/${id}`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json;charset=utf-8'
+			},
+	  		body: JSON.stringify(report)
+		})
+  	  		.then(response => response.json())
+			.then(data => data.forEach(
+				upd => {
+					if (cSelected.id == upd.id) {
+						document.getElementById("rating").innerHTML = upd.rating;
+					}
+				}
+			))
+  	  		.catch(error => alert(error.message));
 }
 
 
@@ -114,13 +114,13 @@ function rGet() {
   	  	},
   	  	body: JSON.stringify(range)
   	})
-    .then(response => response.json()));
+	.then(response => response.json()));
   	Promise.all(requests)
   	  	.then(responses => responses.forEach(
-            data => data.forEach(
-                camera => drawCamera(camera.lat, camera.lon, camera.dev, camera.id)
-            )
-        ))
+			data => data.forEach(
+				camera => drawCamera(camera.lat, camera.lon, camera.dev, camera.id)
+			)
+		))
   	  	.catch(error => alert(error.message));
 
 }
@@ -128,29 +128,29 @@ function rGet() {
 
 function rAdd(){
 	if (newcamera){
-	    let latlng = newcamera.getLatLng();
-        let dev = (document.getElementById('fish').checked) ? 80 : document.getElementById("dev").value;
-	    let addthis = {
-	         lat: latlng.lat.toFixed(6),
+		let latlng = newcamera.getLatLng();
+		let dev = (document.getElementById('fish').checked) ? 80 : document.getElementById("dev").value;
+		let addthis = {
+			 lat: latlng.lat.toFixed(6),
 			 lon: latlng.lng.toFixed(6),
 			 dev: dev,
 			 about: document.getElementById("new_about").value
-	    }
-        fetch('api/add', {
-            method: 'POST',
-            headers: {
-      	  	  	'Content-Type': 'application/json;charset=utf-8'
-      	  	},
-      	  	body: JSON.stringify(addthis)
-        })
-        .then(response => response.json())
-        .then(data => data.forEach(
-            camera => {
-                newcamera.remove();
-                newcamera = undefined;
-                drawCamera(camera.lat, camera.lon, camera.dev, camera.id);
-            }
-        ))
+		}
+		fetch('api/add', {
+			method: 'POST',
+			headers: {
+	  	  	  	'Content-Type': 'application/json;charset=utf-8'
+	  	  	},
+	  	  	body: JSON.stringify(addthis)
+		})
+		.then(response => response.json())
+		.then(data => data.forEach(
+			camera => {
+				newcamera.remove();
+				newcamera = undefined;
+				drawCamera(camera.lat, camera.lon, camera.dev, camera.id);
+			}
+		))
 	}
 }
 
@@ -215,20 +215,20 @@ function prepRanges() {
 
 
 function setCType() {
-    let type = ((document.getElementById('fish').checked)? 'fish' : 'cctv');
-    if (newcamera) {
-        let imgname = 'static/images/'+type+'.png';
+	let type = ((document.getElementById('fish').checked)? 'fish' : 'cctv');
+	if (newcamera) {
+		let imgname = 'static/images/'+type+'.png';
 		let camImg = L.icon({
-            iconUrl: imgname,
-            iconSize: [16, 16],
-            iconAnchor: [8, 8]});
-        newcamera.setIcon(camImg);
-    }
-    if (type == 'fish') {
-        document.getElementById('dev').setAttribute('disabled',"disabled");
-    } else {
-        document.getElementById('dev').removeAttribute('disabled');
-    }
+			iconUrl: imgname,
+			iconSize: [16, 16],
+			iconAnchor: [8, 8]});
+		newcamera.setIcon(camImg);
+	}
+	if (type == 'fish') {
+		document.getElementById('dev').setAttribute('disabled',"disabled");
+	} else {
+		document.getElementById('dev').removeAttribute('disabled');
+	}
 }
 
 
@@ -237,7 +237,7 @@ function oldCamRemove() {
 		for (let i = (cams.length - 1); i > -1; i--) {
 			lalg = cams[i].getLatLng();
 			if (!(newbounds.contains(lalg))) {
-                markers.removeLayer(cams[i]);
+				markers.removeLayer(cams[i]);
 				cams[i].remove();//удаляет маркер
 				cams.splice(i, 1);//убирает освободившийся элемент
 			}

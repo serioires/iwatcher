@@ -46,22 +46,31 @@ class UCcheck(BaseModel):
     user = ForeignKeyField(User, backref = 'checked_for')
     camera = ForeignKeyField(Camera, backref = 'checked_by')
     class Meta:
-        primary_key = CompositeKey('user', 'camera')
+        indexes = (
+            (('user', 'camera'), True),
+        )
+
 
 class UReport(BaseModel):
     user = ForeignKeyField(User, backref = 'reported_for')
     camera = ForeignKeyField(Camera, backref = 'reported_by')
-    type = SmallIntegerField()
-    text = TextField(null = True)
+    report = TextField()
     class Meta:
-        primary_key = CompositeKey('user', 'camera')
+        indexes = (
+            (('user', 'camera'), True),
+        )
+    
+    def __unicode__(self):
+        return self.report
 
 #связь Админ-проголосовал за Пользователя - добавление админов большинством голосов
 class AUvote(BaseModel):
     user = ForeignKeyField(User)
     admin = ForeignKeyField(User)
     class Meta:
-        primary_key = CompositeKey('user', 'admin')
+        indexes = (
+            (('user', 'admin'), True),
+        )
 
 #Для обмена сообщениями между админами
 class AMessage(BaseModel):
@@ -72,4 +81,4 @@ class AMessage(BaseModel):
 
 #если существуют, тихо идем дальше
 with db:
-    db.create_tables([User, Camera, TimePoint, UCcheck, AUvote, AMessage])
+    db.create_tables([User, Camera, TimePoint, UCcheck, AUvote, AMessage, UReport,])

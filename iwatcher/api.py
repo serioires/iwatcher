@@ -1,6 +1,6 @@
 from flask import Blueprint, g, request, jsonify
 from peewee import *
-from iwatcher.models import Camera, UCcheck,TimePoint
+from iwatcher.models import Camera, UCcheck, TimePoint, UReport
 
 bp = Blueprint('api', __name__, url_prefix='/api')
 
@@ -104,5 +104,8 @@ def cam_report(id):
     if user:
         cam = Camera.get_or_none(Camera.id == id)
         if cam:
-            check, newc = UReport.get_or_create(user=user, camera=cam, type=report['type'], text=report['text'])
+            check, newc = UReport.get_or_create(user=user, camera=cam)
+            if newc:
+                q = UReport.update(report=report['text']).where(UReport.user == user, UReport.camera==cam)
+                q.execute()
     return jsonify(cam_arr)

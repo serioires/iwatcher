@@ -35,6 +35,7 @@ class TopSecretIndex(AdminIndexView):
 
 
 class MapModelView(peewee.ModelView):
+    can_edit = False
     form_base_class = SecureForm
     def is_accessible(self):
         if g.user is None:
@@ -47,6 +48,20 @@ class MapModelView(peewee.ModelView):
         return abort(404)
 
 
+class UserView(MapModelView):
+    column_exclude_list = ['password',]
+    column_searchable_list = ['username']
+
+
+class CameraView(MapModelView):
+    column_exclude_list = ['id',]
+
+
+class UReportView(MapModelView):
+    column_exclude_list = ['id',]
+    inline_models = (Camera,)
+    
+
 admin = Admin(
     #app,
     #url='/topsecret',
@@ -58,5 +73,7 @@ import os.path as op
 
 path = op.join(op.dirname(__file__), 'static')
 admin.add_view(TheStorage(path, '/main/', name='Main'))
-admin.add_view(MapModelView(User))
-admin.add_view(MapModelView(Camera))
+admin.add_view(UserView(User))
+admin.add_view(CameraView(Camera))
+admin.add_view(MapModelView(UCcheck))
+admin.add_view(UReportView(UReport))

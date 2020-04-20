@@ -15,11 +15,11 @@
 		<div class="column" id="info">
 			<p><span id="added"></span></p>
 			<p><b>{% if g.lang=='en' %}Confirmed {% else %}Подтверждено {% endif %}</b><span id="rating">0</span>{% if g.lang=='en' %} times{% else %} раз{% endif %}</p>
-			<p><input type="button" value={% if g.lang=='en' %}"Confirm"{% else %}"Подтвердить"{% endif %} onclick="rRate(cSelected.id)"/>
+			<p><input type="button" value={% if g.lang=='en' %}"Confirm"{% else %}"Подтвердить"{% endif %} onclick="if (cSelected) rRate(cSelected.id)"/>
 			<input id="csrf" value="{@}" type="hidden"><input id="hscidt" type="hidden"></p>
 		</div>
 		<div class="column">
-			<span class="des" id="about"></span><input type="button" value={% if g.lang=='en' %}"Report"{% else %}"Пожаловаться"{% endif %} onclick="rReport(cSelected.id)"/>
+			<span class="des" id="about"></span><input type="button" value={% if g.lang=='en' %}"Report"{% else %}"Пожаловаться"{% endif %} onclick="if (cSelected) rReport(cSelected.id)"/>
 		</div>
 </div>
 <script>

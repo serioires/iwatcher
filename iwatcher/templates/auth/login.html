@@ -2,7 +2,7 @@
 {% block content %}
 <div class="article">
 	<h2>Войти</h2>
-        <p>Прочитайте <a href="/pc">политику конфиденциальности</a></p>
+        <p>Прочитай <a href="/pc">политику конфиденциальности и условия использования</a></p>
 	{% from "render_macro.html" import render_field %}
     <form method=post>
         {{ form.csrf_token }}
@@ -27,7 +27,7 @@
 	<a href="/register">{% block m_register %}Регистрация{% endblock %}</a>
 	<hr>
 	<div>
-        <p><a href="/contribute">Поддержите нас электронной монетой</a>, чтобы мы заплатили за сервер :-)</p>
+        <p><a href="/contribute">Поддержи нас электронной монетой</a>, сервер стоит денег :-)</p>
     </div>
 </div>
 {% endblock %}
