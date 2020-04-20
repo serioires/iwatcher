@@ -59,7 +59,6 @@ class CameraView(MapModelView):
 
 class UReportView(MapModelView):
     column_exclude_list = ['id',]
-    inline_models = (Camera,)
     
 
 admin = Admin(
